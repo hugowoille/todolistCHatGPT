@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>World of Warcraft - To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 0;
+    }
+
+    .character-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-height: 300px;
+      /* Ajuster la hauteur maximale au besoin */
+      overflow-y: auto;
+    }
+
+    li {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: #f0f0f0;
+    }
+
+    .hugo ul {
+      background-color: #d2e6f7;
+    }
+
+    .amandine ul {
+      background-color: #fce9f1;
+    }
+
+    .hugo ul li {
+      background-color: #d2e6f7;
+    }
+
+    .amandine ul li {
+      background-color: #fce9f1;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: #808080;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      column-gap: 200px;
+      align-items: flex-start;
+      height: 100vh;
+    }
+
+    .column {
+      flex: 1;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+
+    /* Pointer cursor on the entire row */
+    .amandine ul li,
+    .hugo ul li {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="character-column hugo">
+      <h2>Hugo's Characters</h2>
+      <div class="column">
+        <h3>Endlec</h3>
+        <ul id="endlec-list"></ul>
+
+        <h3>Mathreim</h3>
+        <ul id="mathreim-list"></ul>
+      </div>
+      <div class="column">
+        <h3>Nellytornado</h3>
+        <ul id="nellytornado-list"></ul>
+
+        <h3>Heisa</h3>
+        <ul id="heisa-list"></ul>
+      </div>
+    </div>
+
+    <div class="character-column amandine">
+      <h2>Amandine's Characters</h2>
+      <div class="column">
+        <h3>Choubz</h3>
+        <ul id="choubz-list"></ul>
+
+        <h3>Chøubz</h3>
+        <ul id="choubs2-list"></ul>
+      </div>
+      <div class="column">
+        <h3>Choubzz</h3>
+        <ul id="choubzz-list"></ul>
+
+        <h3>Bichette</h3>
+        <ul id="bichette-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to create a new raid item
+    function createRaidItem(text, character) {
+      const item = document.createElement("li");
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.addEventListener("change", function () {
+        item.classList.toggle("completed");
+        updateLocalStorage();
+      });
+
+      const label = document.createElement("label");
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode(text));
+
+      item.appendChild(label);
+
+      switch (character) {
+        case "endlec":
+          document.getElementById("endlec-list").appendChild(item);
+          break;
+        case "mathreim":
+          document.getElementById("mathreim-list").appendChild(item);
+          break;
+        case "nellytornado":
+          document.getElementById("nellytornado-list").appendChild(item);
+          break;
+        case "heisa":
+          document.getElementById("heisa-list").appendChild(item);
+          break;
+        case "choubz":
+          document.getElementById("choubz-list").appendChild(item);
+          break;
+        case "choubs2":
+          document.getElementById("choubs2-list").appendChild(item);
+          break;
+        case "choubzz":
+          document.getElementById("choubzz-list").appendChild(item);
+          break;
+        case "bichette":
+          document.getElementById("bichette-list").appendChild(item);
+          break;
+      }
+
+      // Check if item is marked as completed in local storage
+      const characterData = JSON.parse(localStorage.getItem(character));
+      if (characterData && characterData.includes(text)) {
+        item.classList.add("completed");
+        checkbox.checked = true;
+      }
+    }
+
+    // Function to update local storage with completed items
+    function updateLocalStorage() {
+      const characters = [
+        "endlec",
+        "mathreim",
+        "nellytornado",
+        "heisa",
+        "choubz",
+        "choubs2",
+        "choubzz",
+        "bichette"
+      ];
+
+      for (const character of characters) {
+        const items = Array.from(document.getElementById(`${character}-list`).children);
+        const completedItems = items
+          .filter(item => item.classList.contains("completed"))
+          .map(item => item.querySelector("label").textContent);
+
+        localStorage.setItem(character, JSON.stringify(completedItems));
+      }
+    }
+
+    // Create raid items
+    // Hugo's Characters
+    createRaidItem("Onyxia 10 joueurs", "endlec");
+    createRaidItem("Onyxia 25 joueurs", "endlec");
+    createRaidItem("Ulduar 10 joueurs", "endlec");
+    createRaidItem("Ulduar 25 joueurs", "endlec");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "endlec");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "endlec");
+
+    createRaidItem("Onyxia 10 joueurs", "mathreim");
+    createRaidItem("Onyxia 25 joueurs", "mathreim");
+    createRaidItem("Ulduar 10 joueurs", "mathreim");
+    createRaidItem("Ulduar 25 joueurs", "mathreim");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "mathreim");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "mathreim");
+
+    createRaidItem("Onyxia 10 joueurs", "nellytornado");
+    createRaidItem("Onyxia 25 joueurs", "nellytornado");
+    createRaidItem("Ulduar 10 joueurs", "nellytornado");
+    createRaidItem("Ulduar 25 joueurs", "nellytornado");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "nellytornado");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "nellytornado");
+
+    createRaidItem("Onyxia 10 joueurs", "heisa");
+    createRaidItem("Onyxia 25 joueurs", "heisa");
+    createRaidItem("Ulduar 10 joueurs", "heisa");
+    createRaidItem("Ulduar 25 joueurs", "heisa");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "heisa");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "heisa");
+
+    // Amandine's Characters
+    createRaidItem("Onyxia 10 joueurs", "choubz");
+    createRaidItem("Onyxia 25 joueurs", "choubz");
+    createRaidItem("Ulduar 10 joueurs", "choubz");
+    createRaidItem("Ulduar 25 joueurs", "choubz");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "choubz");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "choubz");
+
+    createRaidItem("Onyxia 10 joueurs", "choubs2");
+    createRaidItem("Onyxia 25 joueurs", "choubs2");
+    createRaidItem("Ulduar 10 joueurs", "choubs2");
+    createRaidItem("Ulduar 25 joueurs", "choubs2");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "choubs2");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "choubs2");
+
+    createRaidItem("Onyxia 10 joueurs", "choubzz");
+    createRaidItem("Onyxia 25 joueurs", "choubzz");
+    createRaidItem("Ulduar 10 joueurs", "choubzz");
+    createRaidItem("Ulduar 25 joueurs", "choubzz");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "choubzz");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "choubzz");
+
+    createRaidItem("Onyxia 10 joueurs", "bichette");
+    createRaidItem("Onyxia 25 joueurs", "bichette");
+    createRaidItem("Ulduar 10 joueurs", "bichette");
+    createRaidItem("Ulduar 25 joueurs", "bichette");
+    createRaidItem("Trial of the Crusader (ToC) 10 joueurs", "bichette");
+    createRaidItem("Trial of the Crusader (ToC) 25 joueurs", "bichette");
+
+    // Load completed items from local storage
+    window.addEventListener("DOMContentLoaded", function () {
+      const characters = [
+        "endlec",
+        "mathreim",
+        "nellytornado",
+        "heisa",
+        "choubz",
+        "choubs2",
+        "choubzz",
+        "bichette"
+      ];
+
+      for (const character of characters) {
+        const characterData = JSON.parse(localStorage.getItem(character));
+        if (characterData) {
+          for (const itemText of characterData) {
+            const characterList = document.getElementById(`${character}-list`);
+            const existingItems = Array.from(characterList.children);
+            const isDuplicate = existingItems.some(
+              item => item.querySelector("label").textContent === itemText
+            );
+
+            if (!isDuplicate) {
+              createRaidItem(itemText, character);
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
